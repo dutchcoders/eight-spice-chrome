@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html ng-app="App">
+<head>
+	<title></title>
+	<script src="/js/jquery/jquery.min.js"></script>
+	<script src="/js/angular/angular.js"></script>
+	<script src="options.js"></script>
+</head>
+<body ng-controller="OptionsController">
+	<ul>
+		<li ng-repeat='extension in extensions'>
+			{{ extension.title }}
+			{{ extension.regex }}
+			{{ extension.enabled }}
+			<button ng-click='toggle(extension);'>{{ extension.enabled }}</button>
+			<button ng-click='uninstall(extension);'>uninstall</button>
+		</li>
+	</ul>
+	
+	<button ng-click='install();'>install</button>
+</body>
+</html>
