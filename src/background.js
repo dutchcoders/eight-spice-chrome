@@ -9,7 +9,12 @@ chrome.extension.onMessage.addListener(
   function(request, sender, sendResponse) {
 	var extensions = {
 		'http://bitcoinwisdom.com/.*': {
-		    css: [
+		    title: 'test',
+		    description: '',
+		    author: '',
+		    version: "0.0.1",
+		    website: 'http:///',
+  		    css: [
 			"a.link_premium { display: none; } .gg160x600 { display: none; }"
 		    ],
 		    script: [
