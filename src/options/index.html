@@ -10,28 +10,11 @@
 	<ul>{{ config | json}}
 		<li ng-repeat='extension in repository'>
 			{{ extension.title }}
-			{{ extension.regex }}
-			{{ extension.enabled }}
-			{{ config[extension.url] | json}}
-			<button ng-click='toggle(extension);'>{{ isEnabled(extension) }}</button>
+			{{ extension.description }}
+			<button ng-click='toggle(extension);' ng-show='isInstalled(extension)'>{{ isEnabled(extension) }}</button>
 			<button ng-click='install(extension);' ng-hide='isInstalled(extension)'> install</button>
 			<button ng-click='uninstall(extension);' ng-show='isInstalled(extension)'>uninstall</button>
 		</li>
 	</ul>
-	<form name='form' ng-submit='install()' novalidate>
-		
-		<div class='control-group'>
-			<label class='control-label' for="email">Url</label> 
-			<div class='controls'>
-				<input type="text" name="url" ng-model='url' placeholder='enter url' value="" required/>
-				<div class="error ng-hide" ng-show="form.url.$dirty && form.url.$invalid">
-					<small class="error" ng-show="form.url.$error.required">
-						Url is required
-					</small>
-				</div>
-			</div>
-		</div>
-		<button type='submit'>install</button>
-	</form>
 </body>
 </html>

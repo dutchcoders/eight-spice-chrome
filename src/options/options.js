@@ -74,18 +74,21 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
 	// config extension + status?
 	// extension.url -> unique id
 	$log.info($scope.config);
-	$scope.config.extensions[extension.url] = {'enabled': true};
-	save();
+	$scope.config.extensions[extension.url] = {'enabled': true, 'matches': extension.matches };
 	
-	// localStorage
-	return;
-
 	$http.get(extension.url, config).
 		success(function(data, status) {
+		  localStorage.setItem(extension.url, angular.toJson({
+			title: extension.title,
+			description: extension.description,
+			matches: extension.matches,
+			resources: []
+		  }));
+		  
 		  $(data).each(function(index, item) {
-			$log.info(item.url);
-			$log.info(item.name);
-			$log.info(item.type);
+			var item = angular.fromJson(localStorage.getItem(extension.url));
+			item.resources.push({sha: item.sha, url: item.url, name: item.name, content: ''})
+			localStorage.setItem(extension.url, angular.toJson(item));
 		  });
 		}).
 		error(function(data, status) {
@@ -93,7 +96,8 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
 		  $scope.status = status;
 	      });
 		
-	
+	save();
+
 	/*
 	if (!this.form.$valid)
 		return;

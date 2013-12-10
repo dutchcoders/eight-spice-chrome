@@ -6,6 +6,14 @@ var settings = new Store("settings", {
 */
 chrome.browserAction.setPopup({popup:''});
 
+// get config
+var config = {}
+
+// check reload
+chrome.storage.sync.get('config', function(data) {
+    config = data.config || { extensions: {} };
+});
+
 chrome.browserAction.onClicked.addListener(function(tab) {
     console.debug('chrome.browserAction.onClicked');
 });
@@ -74,25 +82,26 @@ chrome.extension.onMessage.addListener( function(request, sender, sendResponse) 
 	var scripts = [];
 	var css = [];
 	
-	for (var key in extensions) {
-	    var reg = new RegExp(key);
+	for (var key in config.extensions) {
+	    var reg = new RegExp(config.extensions[key].matches[0]);
 	    if (!sender.url.match(reg)) 
 		    continue;
 	    
-	    console.debug('found scripts');
 	    chrome.browserAction.enable(sender.tab.id);
 	    chrome.browserAction.setBadgeText({ text:'Actv', tabId: sender.tab.id});
 	    chrome.browserAction.setBadgeBackgroundColor({ color:'#000', tabId: sender.tab.id} )
 	    
-	    if (extensions[key]['script']!=='undefined') {
-		for (var i=0; i < extensions[key]['script'].length; i++)
-		    scripts.push(extensions[key]['script'][i]);
+	    // get from localstorage and inject
+	    /*
+	    if (config.extensions[key]['script']!=='undefined') {
+		for (var i=0; i < config.extensions[key]['script'].length; i++)
+		    scripts.push(config.extensions[key]['script'][i]);
 	    }
 	    
-	    if (extensions[key]['css']!=='undefined') {
+	    if (config.extensions[key]['css']!=='undefined') {
 		for (var i=0; i < extensions[key]['css'].length; i++)
 		    css.push(extensions[key]['css'][i]);
-	    }
+	    }*/
 	}
 	
 	sendResponse({ css: css, scripts: scripts});
