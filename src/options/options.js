@@ -46,7 +46,10 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
     
     var save = function() {
 	chrome.storage.sync.set({'config': $scope.config}, function() {
-	  alert('Settings saved');
+	  	chrome.extension.sendMessage({key:'reload-config'},function(reponse){
+			alert('Settings saved');
+		});
+
 	});
     }
     
