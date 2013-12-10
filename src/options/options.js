@@ -7,68 +7,94 @@ app.config(['$routeProvider', '$httpProvider', '$locationProvider', function($ro
 }]);
 
 app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location', '$log', function($rootScope, $scope, $http, $location, $log) {
-    $scope.extensions = [];
+    $scope.config = { extensions: {} };
+    $scope.repository = [];
     
-     
-    $http.get('https://api.github.com/repos/nl5887/animated-octo-spice-repository/contents').
+    var config = {
+	headers: {
+            'Accept': 'application/vnd.github.v3.raw'
+        }
+    };
+
+    $http.get('https://api.github.com/repos/nl5887/animated-octo-spice-repository/contents/index.json?ref=master', config).
       success(function(data, status) {
-	// {name, path, url, type, dir}
-	$log.info(data);
-        $scope.status = status;
-        $scope.data = data;
+	// cache repos?
+	$scope.repository = data;
       }).
       error(function(data, status) {
         $scope.data = data || "Request failed";
         $scope.status = status;
     });
-    /*
-    'http://bitcoinwisdom.com/.*': {
-	title: 'test',
-	description: '',
-	author: '',
-	version: "0.0.1",
-	website: 'http:///',
-	css: [
-	    "a.link_premium { display: none; } .gg160x600 { display: none; }"
-	],
-	script: [
-	    "/* console.debug(document.readyState); $(document).ready(function() {$( window ).trigger('resize'); console.debug('remco'); }); *"
-	]
-    }
-    */
     
     $scope.toggle = function(extension) {
-	extension.enabled = !extension.enabled;
+	$scope.config.extensions[extension.url].enabled = !$scope.config.extensions[extension.url].enabled;
 	save();
     }
 
     $scope.uninstall = function(extension) {
-	var index = $scope.extensions.indexOf(extension);
-	$scope.extensions.splice( index, 1 );
+	delete ($scope.config.extensions[extension.url]);
 	save();
     }
     
     var load = function() {
-	chrome.storage.sync.get('extensions', function(data) {
+	chrome.storage.sync.get('config', function(data) {
 	    $scope.$apply(function() {
-	      $scope.extensions = data.extensions;
+	      $scope.config = data.config || { extensions: {} };
 	    });
 	});
     }();
     
     var save = function() {
-	chrome.storage.sync.set({'extensions': $scope.extensions}, function() {
+	chrome.storage.sync.set({'config': $scope.config}, function() {
 	  alert('Settings saved');
 	});
     }
     
     var reset = function() {
-	chrome.storage.sync.set({'extensions': null}, function() {
+	chrome.storage.sync.set({'config': {extensions:{}}}, function() {
 	  $log.info("reset");
 	});
     }
     
-    $scope.install = function() {
+    $scope.isInstalled = function(extension)
+    {
+	$log.info($scope.config.extensions[extension.url]);
+	return ($scope.config.extensions[extension.url]!==undefined);	
+    }
+    
+    $scope.isEnabled = function(extension)
+    {
+	if ($scope.config.extensions[extension.url]===undefined) {
+		return (false);
+	}
+	return ($scope.config.extensions[extension.url].enabled);	
+    }
+    
+    $scope.install = function(extension) {
+	// config extension + status?
+	// extension.url -> unique id
+	$log.info($scope.config);
+	$scope.config.extensions[extension.url] = {'enabled': true};
+	save();
+	
+	// localStorage
+	return;
+
+	$http.get(extension.url, config).
+		success(function(data, status) {
+		  $(data).each(function(index, item) {
+			$log.info(item.url);
+			$log.info(item.name);
+			$log.info(item.type);
+		  });
+		}).
+		error(function(data, status) {
+		  $scope.data = data || "Request failed";
+		  $scope.status = status;
+	      });
+		
+	
+	/*
 	if (!this.form.$valid)
 		return;
     
@@ -96,5 +122,6 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
 	$scope.extensions.push({ enabled: true, extension: data});
 	
 	save();
+	*/
     }
 }]);

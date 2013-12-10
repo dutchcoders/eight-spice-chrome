@@ -7,13 +7,15 @@
 	<script src="options.js"></script>
 </head>
 <body ng-controller="OptionsController">
-	<ul>
-		<li ng-repeat='extension in extensions'>
+	<ul>{{ config | json}}
+		<li ng-repeat='extension in repository'>
 			{{ extension.title }}
 			{{ extension.regex }}
 			{{ extension.enabled }}
-			<button ng-click='toggle(extension);'>{{ extension.enabled }}</button>
-			<button ng-click='uninstall(extension);'>uninstall</button>
+			{{ config[extension.url] | json}}
+			<button ng-click='toggle(extension);'>{{ isEnabled(extension) }}</button>
+			<button ng-click='install(extension);' ng-hide='isInstalled(extension)'> install</button>
+			<button ng-click='uninstall(extension);' ng-show='isInstalled(extension)'>uninstall</button>
 		</li>
 	</ul>
 	<form name='form' ng-submit='install()' novalidate>
