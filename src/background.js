@@ -20,6 +20,7 @@ var loadConfig = function() {
 loadConfig();
 
 chrome.browserAction.onClicked.addListener(function(tab) {
+    // show active extensions for current page
     console.debug('chrome.browserAction.onClicked');
 });
 
@@ -116,14 +117,6 @@ chrome.extension.onMessage.addListener( function(request, sender, sendResponse) 
 			scripts.push(localStorage[extension.resources[i].sha] || null);
 		    }
 		}
-    
-		/*
-		if (config.extensions[key]['script']!=='undefined') {
-		    for (var i=0; i < config.extensions[key]['script'].length; i++)
-			scripts.push(config.extensions[key]['script'][i]);
-		}
-		*/
-		
 	    }
 	    
 	    sendResponse({ css: css, scripts: scripts});
@@ -132,24 +125,3 @@ chrome.extension.onMessage.addListener( function(request, sender, sendResponse) 
 	return (true);
   });
   
-  
-  /*
-   *chrome.storage.sync.get()
-  // Save it using the Chrome extension storage API.
-  chrome.storage.sync.set({'value': theValue}, function() {
-    // Notify that we saved.
-    message('Settings saved');
-  });
-  */
-  /*
-chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-    console.debug(request.method);
-    
-    chrome.storage.sync.get(null, function (items) {console.log(items)});
-
-    if (request.method == "getStatus")
-      sendResponse({status: localStorage['status']});
-    else
-      sendResponse({}); // snub them.
-});
-*/

@@ -7,7 +7,7 @@
 	<script src="options.js"></script>
 </head>
 <body ng-controller="OptionsController">
-	<ul>{{ config | json}}
+	<ul>
 		<li ng-repeat='extension in repository'>
 			{{ extension.title }}
 			{{ extension.description }}
