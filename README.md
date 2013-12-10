@@ -15,4 +15,4 @@ Examples
 Repository
 Animated octo spice uses a github repository with several sample extensions. You're encouraged to create your own extensions and push them to the repository.
 
-
+# https://github.com/nl5887/animated-octo-spice-repository/
