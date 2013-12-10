@@ -1,0 +1,31 @@
+h5{ font-weight:bold;}
+
+.main-row{
+    margin-top: 15px;
+}
+
+.list-group-item-left{
+    padding-right: 135px;
+}
+
+.list-group-item .btn-holder{
+    position:absolute;
+    top:25px;
+    right:15px;
+}
+
+.list-group-item .btn-holder.repo{
+    top:15px;
+}
+
+.list-group-item .list-group-item-left > p{
+    font-size: 0.9em;
+    margin: 0.4em 0px;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    overflow:hidden;
+}
+
+.list-group-item p.light-grey{
+    color: #ccc;
+}
