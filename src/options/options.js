@@ -86,9 +86,25 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
 		  }));
 		  
 		  $(data).each(function(index, item) {
-			var item = angular.fromJson(localStorage.getItem(extension.url));
-			item.resources.push({sha: item.sha, url: item.url, name: item.name, content: ''})
-			localStorage.setItem(extension.url, angular.toJson(item));
+			var o = angular.fromJson(localStorage.getItem(extension.url));
+			
+			var type = 'application/unknown';
+			
+			if (item.name.match('\.js$')) {
+				type = 'application/javascript'
+			} else if (item.name.match('\.css$')) {
+				type = 'text/css'
+			}
+			
+			var resource = {sha: item.sha, url: item.url, name: item.name, content: '', type: type};
+			o.resources.push(resource);
+			localStorage.setItem(extension.url, angular.toJson(o));
+			$log.info(resource);
+			$http.get(resource.url, config).
+				success(function(data, status) {
+				$log.info('downloaded' + resource.url );
+				localStorage.setItem(resource.sha, data);
+			});
 		  });
 		}).
 		error(function(data, status) {

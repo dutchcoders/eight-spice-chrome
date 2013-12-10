@@ -92,16 +92,26 @@ chrome.extension.onMessage.addListener( function(request, sender, sendResponse) 
 	    chrome.browserAction.setBadgeBackgroundColor({ color:'#000', tabId: sender.tab.id} )
 	    
 	    // get from localstorage and inject
+	    var extension = JSON.parse(localStorage.getItem(key) || null);
+	    if (!extension)
+		continue;
+
+	    for (i = 0; i< extension.resources.length; i++) {
+		console.debug(extension.resources[i].type);
+		if (extension.resources[i].type=='text/css') {
+		    css.push(localStorage[extension.resources[i].sha] || null);
+		} else if (extension.resources[i].type=='application/javascript') {
+		    scripts.push(localStorage[extension.resources[i].sha] || null);
+		}
+	    }
+
 	    /*
 	    if (config.extensions[key]['script']!=='undefined') {
 		for (var i=0; i < config.extensions[key]['script'].length; i++)
 		    scripts.push(config.extensions[key]['script'][i]);
 	    }
+	    */
 	    
-	    if (config.extensions[key]['css']!=='undefined') {
-		for (var i=0; i < extensions[key]['css'].length; i++)
-		    css.push(extensions[key]['css'][i]);
-	    }*/
 	}
 	
 	sendResponse({ css: css, scripts: scripts});
