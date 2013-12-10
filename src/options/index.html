@@ -8,14 +8,40 @@
 </head>
 <body ng-controller="OptionsController">
 	<ul>
-		<li ng-repeat='extension in repository'>
+		<li ng-repeat='extension in extensions'>
 			{{ extension.title }}
 			{{ extension.description }}
+			{{ extension.repository.title }}
 			<button ng-click='toggle(extension);' ng-show='isInstalled(extension)'>{{ isEnabled(extension) }}</button>
 			<button ng-click='install(extension);' ng-hide='isInstalled(extension)'> install</button>
 			<button ng-click='uninstall(extension);' ng-show='isInstalled(extension)'>uninstall</button>
 			<button ng-click='install(extension);' ng-show='isInstalled(extension)'>update</button>
 		</li>
 	</ul>
+	
+	<ul>
+		<li ng-repeat='repository in repositories'>
+			{{ repository.title }}
+			{{ repository.url }}
+			
+			<button ng-click='removeRepository(repository);' >remove</button>
+			
+		</li>
+	</ul>
+	<form name='form' ng-submit='addRepository()' novalidate>
+                <div class='control-group'>
+                        <label class='control-label' for="email">Url</label> 
+                        <div class='controls'>
+                                <input type="text" name="url" ng-model='url' placeholder='enter url' value="" required/>
+                                <div class="error ng-hide" ng-show="form.url.$dirty && form.url.$invalid">
+                                        <small class="error" ng-show="form.url.$error.required">
+                                                Url to manifest required
+                                        </small>
+                                </div>
+                        </div>
+                </div>
+                <button type='submit'>add repository</button>
+        </form>
+
 </body>
 </html>

@@ -7,24 +7,68 @@ app.config(['$routeProvider', '$httpProvider', '$locationProvider', function($ro
 }]);
 
 app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location', '$log', function($rootScope, $scope, $http, $location, $log) {
-    $scope.config = { extensions: {} };
-    $scope.repository = [];
+	$scope.config = { extensions: {} };
+	$scope.extensions = [];
+	$scope.repositories = [];
+	
+	chrome.storage.sync.get('repositories', function(data) {
+	    $scope.$apply(function() {
+		$log.info(data);
+		angular.forEach(data.repositories || [{title: 'Animated Octo Spice', url: 'https://api.github.com/repos/nl5887/animated-octo-spice-repository/contents/index.json?ref=master'}], function(repository, index) {
+			$log.info("loading repository " + repository.url);
+			loadRepository(repository.url);
+		});
+	    });
+	});
+
+	var config = {
+	    headers: {
+		'Accept': 'application/vnd.github.v3.raw'
+	    }
+	};
+
+    var loadRepository = function(url, callback) {
+	$http.get(url, config).
+		success(function(data, status) {
+			var repository = { title:data.title, url: url};
+			$scope.repositories.push(repository);
+			angular.forEach(data.extensions || [], function(extension, index) {
+				angular.extend(extension, { repository: repository});
+				$scope.extensions.push(extension);
+			});
+			if (callback) {
+				callback();
+			}
+		}).
+		error(function(data, status) {
+			$scope.data = data || "Request failed";
+			$scope.status = status;
+	});
+    };
     
-    var config = {
-	headers: {
-            'Accept': 'application/vnd.github.v3.raw'
-        }
+    var saveRepositories = function() {
+	$log.info($scope.repositories);
+	chrome.storage.sync.set({'repositories': $scope.repositories}, function() {
+		alert('Repositories saved');
+	});
+    }
+    
+    $scope.addRepository = function() {
+        if (!this.form.$valid)
+                return;
+	
+	loadRepository(this.form.url.$modelValue, function() {
+		saveRepositories();
+	});
+	
+	this.form.url.$modelValue = '';
     };
 
-    $http.get('https://api.github.com/repos/nl5887/animated-octo-spice-repository/contents/index.json?ref=master', config).
-      success(function(data, status) {
-	// cache repos?
-	$scope.repository = data;
-      }).
-      error(function(data, status) {
-        $scope.data = data || "Request failed";
-        $scope.status = status;
-    });
+    $scope.removeRepository = function(repository) {
+        var index = $scope.repositories.indexOf(repository);
+        $scope.repositories.splice( index, 1 );
+	saveRepositories();
+    }
     
     $scope.toggle = function(extension) {
 	$scope.config.extensions[extension.url].enabled = !$scope.config.extensions[extension.url].enabled;
@@ -61,7 +105,6 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
     
     $scope.isInstalled = function(extension)
     {
-	$log.info($scope.config.extensions[extension.url]);
 	return ($scope.config.extensions[extension.url]!==undefined);	
     }
     
@@ -74,8 +117,6 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
     }
     
     $scope.install = function(extension) {
-	// config extension + status?
-	// extension.url -> unique id
 	$log.info($scope.config);
 	$scope.config.extensions[extension.url] = {'enabled': true, 'matches': extension.matches };
 	
