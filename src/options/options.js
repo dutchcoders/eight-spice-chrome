@@ -50,12 +50,20 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$location', '$log'
 	});
     }
     
+    var reset = function() {
+	chrome.storage.sync.set({'extensions': null}, function() {
+	  $log.info("reset");
+	});
+    }
+    
     $scope.install = function() {
 	if (!this.form.$valid)
 		return;
     
 	// download manifest
 	var data = {
+		guid: '013e2b34-58ed-4f64-acee-458c000cfacd',
+		url: 'http://github.com/nl5887/remco/remco', // also unique identifier
 		title: 'Bitcoinwisdom remove ads',
 		category: 'ads',
 		tags: [''],
@@ -69,11 +77,11 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$location', '$log'
 		],
 		script: [
 		    "/* console.debug(document.readyState); $(document).ready(function() {$( window ).trigger('resize'); console.debug('remco'); }); *"
-		],
-		enabled: false
+		]
 	}
 	
-	$scope.extensions.push(data);
+	// how to update / overwrite? unique identifier?
+	$scope.extensions.push({ enabled: true, extension: data});
 	
 	save();
     }

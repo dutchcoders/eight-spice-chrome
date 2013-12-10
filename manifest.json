@@ -22,6 +22,10 @@
     "scripts": ["src/background.js"],
     "persistent": true
   },
+  "browser_action": {
+    "default_title": "Site Extender",      // optional; shown in tooltip
+    "default_popup": "src/popup.html"        // optional
+  },
   "content_scripts": [
     {
       "matches": [

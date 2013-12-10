@@ -4,6 +4,11 @@ var settings = new Store("settings", {
 //     "sample_setting": "This is how you use Store.js to remember values"
 });
 */
+chrome.browserAction.setPopup({popup:''});
+
+chrome.browserAction.onClicked.addListener(function(tab) {
+    console.debug('chrome.browserAction.onClicked');
+});
 
 chrome.extension.onMessage.addListener(
   function(request, sender, sendResponse) {
@@ -63,6 +68,10 @@ chrome.extension.onMessage.addListener(
 		}
 	}
 	
+	chrome.browserAction.disable(sender.tab.id);
+	chrome.browserAction.setBadgeText({ text:'', tabId: sender.tab.id});
+	chrome.browserAction.setBadgeBackgroundColor({ color:'#FFF', tabId: sender.tab.id } );
+	
 	var scripts = [];
 	var css = [];
 	
@@ -72,6 +81,9 @@ chrome.extension.onMessage.addListener(
 		    continue;
 	    
 	    console.debug('found scripts');
+	    chrome.browserAction.enable(sender.tab.id);
+	    chrome.browserAction.setBadgeText({ text:'Actv', tabId: sender.tab.id});
+	    chrome.browserAction.setBadgeBackgroundColor({ color:'#000', tabId: sender.tab.id} )
 	    
 	    if (extensions[key]['script']!=='undefined') {
 		for (var i=0; i < extensions[key]['script'].length; i++)
