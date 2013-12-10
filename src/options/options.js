@@ -1,3 +1,10 @@
+// ==========================================================================
+// Project:   	animated-octo-spice - Chrome Website Extender
+// Copyright: 	Copyright 2011-2013 NL5887, Raz0rwire. and contributors
+// License:   	Licensed under MIT license
+// Home:	https://github.com/nl5887/animated-octo-spice/
+// ==========================================================================
+
 'use strict';
 
 var app = angular.module('App', []);
@@ -14,7 +21,7 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
 	chrome.storage.sync.get('repositories', function(data) {
 	    $scope.$apply(function() {
 		$log.info(data);
-		angular.forEach(data.repositories || [{title: 'Animated Octo Spice', url: 'https://api.github.com/repos/nl5887/animated-octo-spice-repository/contents/index.json?ref=master'}], function(repository, index) {
+		angular.forEach(data.repositories || [{title: 'Animated Octo Spice', url: 'https://api.github.com/repos/nl5887/animated-octo-spice-repository/contents/index.json'}], function(repository, index) {
 			$log.info("loading repository " + repository.url);
 			loadRepository(repository.url);
 		});
@@ -90,10 +97,9 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
     
     var save = function() {
 	chrome.storage.sync.set({'config': $scope.config}, function() {
-	  	chrome.extension.sendMessage({key:'reload-config'},function(reponse){
+		chrome.extension.sendMessage({key:'reload-config'},function(reponse){
 			alert('Settings saved');
 		});
-
 	});
     }
     

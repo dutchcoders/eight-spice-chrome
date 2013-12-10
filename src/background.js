@@ -27,7 +27,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 chrome.extension.onMessage.addListener( function(request, sender, sendResponse) {
 	if (request.key == 'reload-config') {
 	    loadConfig();	    
-	    sendResponse();
+	    sendResponse({});
 	} else {
 	    var extensions = {
 		    'http://bitcoinwisdom.com/.*': {

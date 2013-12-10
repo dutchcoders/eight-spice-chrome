@@ -7,6 +7,7 @@
 	<script src="options.js"></script>
 </head>
 <body ng-controller="OptionsController">
+	<h3>Extensions</h3>
 	<ul>
 		<li ng-repeat='extension in extensions'>
 			{{ extension.title }}
@@ -19,6 +20,7 @@
 		</li>
 	</ul>
 	
+	<h3>Repositories</h3>
 	<ul>
 		<li ng-repeat='repository in repositories'>
 			{{ repository.title }}
