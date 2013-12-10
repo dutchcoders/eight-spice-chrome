@@ -14,6 +14,7 @@
 			<button ng-click='toggle(extension);' ng-show='isInstalled(extension)'>{{ isEnabled(extension) }}</button>
 			<button ng-click='install(extension);' ng-hide='isInstalled(extension)'> install</button>
 			<button ng-click='uninstall(extension);' ng-show='isInstalled(extension)'>uninstall</button>
+			<button ng-click='install(extension);' ng-show='isInstalled(extension)'>update</button>
 		</li>
 	</ul>
 </body>
