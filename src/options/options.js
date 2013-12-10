@@ -6,9 +6,21 @@ app.config(['$routeProvider', '$httpProvider', '$locationProvider', function($ro
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 }]);
 
-app.controller('OptionsController', ['$rootScope', '$scope', '$location', '$log', function($rootScope, $scope, $location, $log) {
+app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location', '$log', function($rootScope, $scope, $http, $location, $log) {
     $scope.extensions = [];
     
+     
+    $http.get('https://api.github.com/repos/nl5887/animated-octo-spice-repository/contents').
+      success(function(data, status) {
+	// {name, path, url, type, dir}
+	$log.info(data);
+        $scope.status = status;
+        $scope.data = data;
+      }).
+      error(function(data, status) {
+        $scope.data = data || "Request failed";
+        $scope.status = status;
+    });
     /*
     'http://bitcoinwisdom.com/.*': {
 	title: 'test',

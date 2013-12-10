@@ -10,9 +10,8 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     console.debug('chrome.browserAction.onClicked');
 });
 
-chrome.extension.onMessage.addListener(
-  function(request, sender, sendResponse) {
-	var extensions = {
+chrome.extension.onMessage.addListener( function(request, sender, sendResponse) {
+ 	var extensions = {
 		'http://bitcoinwisdom.com/.*': {
 		    title: 'test',
 		    description: '',
