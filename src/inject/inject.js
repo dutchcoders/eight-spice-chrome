@@ -37,7 +37,7 @@ chrome.extension.sendMessage({}, function(response) {
 		var script = document.createElement("script")
 		script.type = "text/javascript";
 		script.text = response.scripts[index];
-		document.getElementsByTagName("body")[0].appendChild(script);
+		document.body.appendChild(script);
 		console.debug('injected script;');
 	}
 	

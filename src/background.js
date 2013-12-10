@@ -1,12 +1,5 @@
-// if you checked "fancy-settings" in extensionizr.com, uncomment this lines
-/*
-var settings = new Store("settings", {
-//     "sample_setting": "This is how you use Store.js to remember values"
-});
-*/
 chrome.browserAction.setPopup({popup:''});
 
-// get config
 var config = { extensions: {} }
 
 var loadConfig = function() {
@@ -31,7 +24,7 @@ chrome.extension.onMessage.addListener( function(request, sender, sendResponse) 
 	} else {
 	    chrome.browserAction.disable(sender.tab.id);
 	    chrome.browserAction.setBadgeText({ text:'', tabId: sender.tab.id});
-	    chrome.browserAction.setBadgeBackgroundColor({ color:'#FFF', tabId: sender.tab.id } );
+	    chrome.browserAction.setBadgeBackgroundColor({ color:'#fff', tabId: sender.tab.id } );
 	    
 	    var scripts = [];
 	    var css = [];

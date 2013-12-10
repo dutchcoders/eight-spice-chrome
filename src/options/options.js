@@ -98,6 +98,7 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
     var save = function() {
 	chrome.storage.sync.set({'config': $scope.config}, function() {
 		chrome.extension.sendMessage({key:'reload-config'},function(reponse){
+			// http://stackoverflow.com/questions/12501693/chrome-extension-throwing-error-in-console
 			alert('Settings saved');
 		});
 	});
