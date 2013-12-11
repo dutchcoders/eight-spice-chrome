@@ -7,10 +7,13 @@ Animated octo spice is a chrome extension that allows you to customize every web
 Examples
 * change font size
 * change layout
+* add social buttons
+* implement key navigation
 * but also implement smart typing 
 * improve performance
-* etc
-* 
+* create graphs from table's
+* create a complete new theme for an existing website
+* everything you can think of
 
 Repository
 Animated octo spice uses a github repository with several sample extensions. You're encouraged to create your own extensions and push them to the repository.

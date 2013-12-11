@@ -115,12 +115,26 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
 	return ($scope.config.extensions[extension.url]!==undefined);	
     }
     
+    $scope.isNotInstalled = function(extension)
+    {
+	return ($scope.config.extensions[extension.url]===undefined);	
+    }
+    
     $scope.isEnabled = function(extension)
     {
 	if ($scope.config.extensions[extension.url]===undefined) {
 		return (false);
 	}
 	return ($scope.config.extensions[extension.url].enabled);	
+    }
+    
+    $scope.isNotEnabled = function(extension)
+    {
+	if ($scope.config.extensions[extension.url]===undefined) {
+	    return (true);
+	}else{
+	    return (false);
+	}
     }
     
     $scope.install = function(extension) {

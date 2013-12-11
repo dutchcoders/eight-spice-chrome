@@ -4,45 +4,99 @@
 	<title></title>
 	<script src="/js/jquery/jquery.min.js"></script>
 	<script src="/js/angular/angular.js"></script>
+	<script src="/js/bootstrap.min.js"></script>	
 	<script src="options.js"></script>
+
+	
+	<link href="/css/font-awesome.css" rel="stylesheet" type="text/css"/>
+	<link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+	<link href="/css/styles.css" rel="stylesheet" type="text/css"/>
 </head>
 <body ng-controller="OptionsController">
-	<h3>Extensions</h3>
-	<ul>
-		<li ng-repeat='extension in extensions'>
-			{{ extension.title }}
-			{{ extension.description }}
-			{{ extension.repository.title }}
-			<button ng-click='toggle(extension);' ng-show='isInstalled(extension)'>{{ isEnabled(extension) }}</button>
-			<button ng-click='install(extension);' ng-hide='isInstalled(extension)'> install</button>
-			<button ng-click='uninstall(extension);' ng-show='isInstalled(extension)'>uninstall</button>
-			<button ng-click='install(extension);' ng-show='isInstalled(extension)'>update</button>
-		</li>
-	</ul>
-	
-	<h3>Repositories</h3>
-	<ul>
-		<li ng-repeat='repository in repositories'>
-			{{ repository.title }}
-			{{ repository.url }}
-			<button ng-click='removeRepository(repository);' >remove</button>
-			
-		</li>
-	</ul>
-	<form name='form' ng-submit='addRepository()' novalidate>
-                <div class='control-group'>
-                        <label class='control-label' for="email">Url</label> 
-                        <div class='controls'>
-                                <input type="text" name="url" ng-model='url' placeholder='enter url' value="" required/>
-                                <div class="error ng-hide" ng-show="form.url.$dirty && form.url.$invalid">
-                                        <small class="error" ng-show="form.url.$error.required">
-                                                Url to manifest required
-                                        </small>
-                                </div>
-                        </div>
-                </div>
-                <button type='submit'>add repository</button>
-        </form>
-
+	<div class="container">
+		<div class="row main-row">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading"><i class="fa fa-puzzle-piece"></i> Extensions</div>
+					<ul class="list-group">
+						<li class="list-group-item clearfix" ng-repeat='extension in extensions'>
+							<div class="list-group-item-left">
+								<h5 class="list-group-item-heading">{{ extension.title }}</h5>
+								<p class="list-group-item-text">{{ extension.description }}</p>
+								<p class="light-grey">{{ extension.repository.title }}</p>
+							</div>	
+							<div class="btn-holder">		
+								<div class="btn-group pull-right " ng-show='isInstalled(extension)'>
+									<button ng-click='toggle(extension)'  type="button" class="btn btn-primary">
+										<span ng-show="isNotEnabled(extension)" ng-hide="isEnabled(extension)">Activate <i class="fa fa-power-off"></i></span>
+									<span ng-hide="isNotEnabled(extension)" ng-show="isEnabled(extension)">Deactivate <i class="fa fa-power-off"></i></span>
+									</button>
+									<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+									  <span class="caret"></span>
+									  <span class="sr-only">Toggle Dropdown</span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li><a ng-click='install(extension);' href="#"><i class="fa fa-refresh"></i> Update</a></li>
+										<li><a ng-click='uninstall(extension);' href="#"><i class="fa fa-trash-o"></i> Uninstall</a></li>
+										<li><a href="{{ extension.url }}"><i class="fa fa-code"></i> View source</a></li>
+										<li role="presentation" class="divider"></li>	
+										<li><a href="{{ extension.url }}"><i class="fa fa-info-circle"></i> More info</a></li>
+									</ul>
+								</div>
+								<div class="btn-group pull-right " ng-show='isNotInstalled(extension)'>
+									<a ng-click='install(extension)'  type="button" class="btn btn-success">Install <i class="fa fa-dropbox"></i></a>
+									<button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+									  <span class="caret"></span>
+									  <span class="sr-only">Toggle Dropdown</span>
+									</button>
+									<ul class="dropdown-menu" role="menu">
+										<li><a href="{{ extension.url }}"><i class="fa fa-code"></i> View source</a></li>
+										<li role="presentation" class="divider"></li>	
+										<li><a href="{{ extension.url }}"><i class="fa fa-info-circle"></i> More info</a></li>
+									</ul>
+								</div>
+							</div>
+						</li>
+					</ul>
+					
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading"><i class="fa fa-github"></i> Repositories</div>
+					<ul class="list-group">
+						<li class="list-group-item clearfix" ng-repeat='repository in repositories'>
+							<div class="list-group-item-left">
+								<h5 class="list-group-item-heading">{{ repository.title }}</h5>
+								<p class="list-group-item-text">{{ repository.url }}</p>
+							</div>
+							<div class="btn-holder repo">		
+								<button ng-click='removeRepository(repository);' class="btn btn-danger" >Remove <i class="fa fa-trash-o"></i></button>		
+							</div>
+						</li>	
+					</ul>
+				</div>				
+				<div class="panel panel-default">
+					<div class="panel-heading"><i class="fa fa-plus-circle"></i> New repository</div>
+					<div class="panel-body">
+						<form name='form' ng-submit='addRepository()' novalidate>
+							<div class='control-group'>
+								<div class="input-group">
+									<input type="text" class="form-control" name="url" ng-model='url' placeholder='Enter repository URL' value="" required/>
+									<span class="input-group-btn">
+										<button class="btn btn-success" type="Submit">Add repository <i class="fa fa-cloud-download"></i> </button>
+									</span>
+								</div>	
+								<div style="padding: 5px 15px; margin-top: 1em; margin-bottom:0px;" class="alert-danger alert ng-hide" ng-show="form.url.$dirty && form.url.$invalid">
+									<small class="error" ng-show="form.url.$error.required">
+										Enter the url of the repository (json).</small>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>			
+			</div>		
+		</div>
+	</div>
 </body>
 </html>
