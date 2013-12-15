@@ -1,8 +1,8 @@
 // ==========================================================================
-// Project:   	animated-octo-spice - Chrome Website Extender
+// Project:   	eight-octo-spice - Chrome Website Extender
 // Copyright: 	Copyright 2011-2013 NL5887, Raz0rwire. and contributors
 // License:   	Licensed under MIT license
-// Home:	https://github.com/nl5887/animated-octo-spice/
+// Home:	https://github.com/nl5887/eight-spice/
 // ==========================================================================
 
 'use strict';
@@ -21,7 +21,7 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
 	chrome.storage.sync.get('repositories', function(data) {
 	    $scope.$apply(function() {
 		$log.info(data);
-		angular.forEach(data.repositories || [{title: 'Animated Octo Spice', url: 'https://api.github.com/repos/nl5887/animated-octo-spice-repository/contents/index.json'}], function(repository, index) {
+		angular.forEach(data.repositories || [{title: 'Eight Spice', url: 'https://api.github.com/repos/nl5887/eight-spice-repository/contents/index.json'}], function(repository, index) {
 			$log.info("loading repository " + repository.url);
 			loadRepository(repository.url);
 		});

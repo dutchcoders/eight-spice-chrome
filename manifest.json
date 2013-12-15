@@ -1,9 +1,9 @@
 {
-  "name": "Site Extender",
+  "name": "Eight Spice",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Bla",
-  "homepage_url": "http://nu.nl/",
+  "description": "",
+  "homepage_url": "https://github.com/nl5887/eight-spice",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -23,7 +23,7 @@
     "persistent": true
   },
   "browser_action": {
-    "default_title": "Site Extender",      // optional; shown in tooltip
+    "default_title": "Eight Spice",      // optional; shown in tooltip
     "default_popup": "src/popup.html"        // optional
   },
   "content_scripts": [
