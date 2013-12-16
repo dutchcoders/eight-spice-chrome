@@ -1,9 +1,8 @@
 // ==========================================================================
-i
 // Project:   	eight-octo-spice - Chrome Website Extender
 // Copyright: 	Copyright 2011-2013 NL5887, Raz0rwire. and contributors
 // License:   	Licensed under MIT license
-// Home:	https://github.com/nl5887/eight-spice/
+// Home:	https://github.com/dutchcoders/eight-spice/
 // ==========================================================================
 
 'use strict';
@@ -22,7 +21,7 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
 	chrome.storage.sync.get('repositories', function(data) {
 	    $scope.$apply(function() {
 		$log.info(data);
-		angular.forEach(data.repositories || [{title: 'Eight Spice', url: 'https://api.github.com/repos/nl5887/eight-spice-repository/contents/index.json'}], function(repository, index) {
+		angular.forEach(data.repositories || [{title: 'Eight Spice', url: 'https://api.github.com/repos/dutchcoders/eight-spice-repository/contents/index.json'}], function(repository, index) {
 			$log.info("loading repository " + repository.url);
 			loadRepository(repository.url);
 		});
@@ -187,7 +186,7 @@ app.controller('OptionsController', ['$rootScope', '$scope', '$http', '$location
 	// download manifest
 	var data = {
 		guid: '013e2b34-58ed-4f64-acee-458c000cfacd',
-		url: 'http://github.com/nl5887/remco/remco', // also unique identifier
+		url: 'http://github.com/dutchcoders/remco/remco', // also unique identifier
 		title: 'Bitcoinwisdom remove ads',
 		category: 'ads',
 		tags: [''],
